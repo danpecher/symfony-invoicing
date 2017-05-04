@@ -76,6 +76,8 @@ class Invoice
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->issuedAt = new \DateTime();
+        $this->paymentDue = new \DateTime();
     }
 
     /** @PrePersist */
