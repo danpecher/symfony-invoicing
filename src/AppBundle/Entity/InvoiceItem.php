@@ -115,7 +115,7 @@ class InvoiceItem
      */
     public function getPricePerUnitCents()
     {
-        return $this->pricePerUnitCents;
+        return $this->pricePerUnitCents / 100;
     }
 
     /**
@@ -123,7 +123,7 @@ class InvoiceItem
      */
     public function setPricePerUnitCents($pricePerUnitCents)
     {
-        $this->pricePerUnitCents = $pricePerUnitCents;
+        $this->pricePerUnitCents = $pricePerUnitCents * 100;
     }
 
     /**

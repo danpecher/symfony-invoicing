@@ -95,7 +95,7 @@ class Invoice
             $total += $item->getQuantity() * $item->getPricePerUnitCents();
         }
 
-        $this->setTotalCents($total);
+        $this->setTotalCents($total * 100);
     }
 
     /**
