@@ -125,4 +125,22 @@ class InvoicesController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/invoice/{id}/delete", name="invoice.delete", requirements={"id": "\d+"})
+     */
+    public function deleteAction($id)
+    {
+        $invoice = $this->getDoctrine()->getRepository(Invoice::class)
+                        ->find($id);
+        if ( ! $invoice) {
+            throw $this->createNotFoundException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($invoice);
+        $em->flush();
+
+        return $this->redirectToRoute('dashboard');
+    }
 }

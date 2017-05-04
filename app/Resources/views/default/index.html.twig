@@ -21,7 +21,7 @@
             <tr>
                 <th>Jméno klienta</th>
                 <th>Částka</th>
-                <th></th>
+                <th width="15%"></th>
             </tr>
             {% for invoice in invoices %}
                 <tr>
@@ -33,6 +33,9 @@
                         </a>
                         <a href="{{ path('invoice.edit', {id: invoice.id}) }}" class="button is-small">
                             <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                        </a>
+                        <a href="{{ path('invoice.delete', {id: invoice.id}) }}" class="button is-small is-danger __confirm">
+                            <span class="icon is-small"><i class="fa fa-trash"></i></span>
                         </a>
                     </td>
                 </tr>
