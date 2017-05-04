@@ -1,3 +1,6 @@
+.title a {
+  margin-left: 10px; }
+
 .invoice-item-row {
   display: flex;
   align-items: center;
