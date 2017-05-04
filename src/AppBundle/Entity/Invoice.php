@@ -70,6 +70,21 @@ class Invoice
     private $totalCents;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $sent = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $cancelled = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $paid = false;
+
+    /**
      * Invoice constructor.
      */
     public function __construct()
@@ -248,4 +263,51 @@ class Invoice
         $this->totalCents = $totalCents * 100;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSent()
+    {
+        return $this->sent;
+    }
+
+    /**
+     * @param mixed $sent
+     */
+    public function setSent($sent)
+    {
+        $this->sent = $sent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCancelled()
+    {
+        return $this->cancelled;
+    }
+
+    /**
+     * @param mixed $cancelled
+     */
+    public function setCancelled($cancelled)
+    {
+        $this->cancelled = $cancelled;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPaid()
+    {
+        return $this->paid;
+    }
+
+    /**
+     * @param mixed $paid
+     */
+    public function setPaid($paid)
+    {
+        $this->paid = $paid;
+    }
 }

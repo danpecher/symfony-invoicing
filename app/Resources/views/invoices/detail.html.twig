@@ -3,16 +3,47 @@
 {% block body %}
     <h1 class="title">
         Faktura #{{ invoice.number }}
+
+        {% if invoice.sent %}
+            <span class="tag is-info">Odeslaná</span>
+        {% endif %}
+        {% if invoice.paid %}
+            <span class="tag is-success">Zaplacená</span>
+        {% endif %}
+        {% if invoice.cancelled %}
+            <span class="tag is-danger">Zrušená</span>
+        {% endif %}
+
         <a href="{{ path('invoice.edit', {id: invoice.id}) }}" class="button is-primary is-pulled-right">
             <span class="icon is-small"><i class="fa fa-pencil"></i></span>
             <span>Upravit</span>
         </a>
-        <a href="{{ path('invoice.pdf', {id: invoice.id}) }}" target="_blank" class="button is-secondary is-pulled-right">
+        <a href="{{ path('invoice.pdf', {id: invoice.id}) }}" target="_blank"
+           class="button is-secondary is-pulled-right">
             <span class="icon is-small"><i class="fa fa-file"></i></span>
             <span>PDF</span>
         </a>
     </h1>
-    <dl>
+
+    {% if not invoice.cancelled %}
+        <div class="invoice-actions">
+            <strong>Akce:&nbsp;</strong>
+            <a href="{{ path('invoice.paid', {id: invoice.id}) }}" class="button is-small is-success __confirm">
+                <span class="icon is-small"><i class="fa fa-check"></i></span>
+                <span><strong>Zaplacená</strong></span>
+            </a>
+            <a href="{{ path('invoice.send', {id: invoice.id}) }}" class="button is-small is-info __confirm">
+                <span class="icon is-small"><i class="fa fa-envelope"></i></span>
+                <span><strong>Odeslat</strong></span>
+            </a>
+            <a href="{{ path('invoice.cancel', {id: invoice.id}) }}" class="button is-small is-danger __confirm">
+                <span class="icon is-small"><i class="fa fa-times"></i></span>
+                <span><strong>Zrušit</strong></span>
+            </a>
+        </div>
+    {% endif %}
+
+    <dl class="invoice-data">
         <dt><strong>Klient</strong></dt>
         <dd><a href="{{ path('client.detail', {id: invoice.client.id}) }}">{{ invoice.client.name }}</a></dd>
         <dt><strong>Datum vystavení</strong></dt>
@@ -21,7 +52,7 @@
         <dd>{{ invoice.paymentDue |date('d. m. Y') }}</dd>
     </dl>
 
-    <div class="invoice-items">
+    <div class="invoice-items{% if invoice.cancelled %} invoice-cancelled{% endif %}">
         {% set items = [] %}
         {% for item in invoice.items %}
             {% set items = items|merge([{
