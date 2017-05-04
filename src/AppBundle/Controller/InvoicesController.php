@@ -73,7 +73,7 @@ class InvoicesController extends Controller
             return $this->redirectToRoute('dashboard');
         }
 
-        return $this->render('invoice/new.html.twig', [
+        return $this->render('invoices/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
