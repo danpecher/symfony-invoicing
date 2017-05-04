@@ -42,7 +42,7 @@ class InvoiceItem
     private $pricePerUnitCents;
 
     /**
-     * @ManyToOne(targetEntity="Invoice")
+     * @ManyToOne(targetEntity="Invoice", inversedBy="items")
      */
     private $invoice;
 

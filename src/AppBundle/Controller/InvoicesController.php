@@ -110,8 +110,10 @@ class InvoicesController extends Controller
         }
         $form = $this->createForm(InvoiceForm::class, $invoice);
         $form->handleRequest($request);
+
         if ($form->isValid()) {
             $invoice = $form->getData();
+
             $em      = $this->getDoctrine()->getManager();
             $em->persist($invoice);
             $em->flush();
@@ -119,7 +121,7 @@ class InvoicesController extends Controller
             return $this->redirectToRoute('invoice.edit', ['id' => $id]);
         }
 
-        return $this->render('invoice/edit.html.twig', [
+        return $this->render('invoices/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }

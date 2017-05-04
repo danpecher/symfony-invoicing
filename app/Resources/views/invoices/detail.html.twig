@@ -12,10 +12,14 @@
         <dt><strong>Klient</strong></dt>
         <dd><a href="{{ path('client.detail', {id: invoice.client.id}) }}">{{ invoice.client.name }}</a></dd>
         <dt><strong>Datum vystavení</strong></dt>
-        <dd>{{ invoice.issuedAt |date('d. m. Y')}}</dd>
+        <dd>{{ invoice.issuedAt |date('d. m. Y') }}</dd>
         <dt><strong>Datum splatnosti</strong></dt>
-        <dd>{{ invoice.paymentDue |date('d. m. Y')}}</dd>
+        <dd>{{ invoice.paymentDue |date('d. m. Y') }}</dd>
         <dt><strong>Celkem</strong></dt>
         <dd>{{ invoice.totalCents |price(invoice.currency) }}</dd>
     </dl>
+
+    {% for item in invoice.items %}
+        <div>{{ item.name }}</div>
+    {% endfor %}
 {% endblock %}

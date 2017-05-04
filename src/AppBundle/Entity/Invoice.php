@@ -10,8 +10,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Doctrine\ORM\Mapping\PrePersist;
-use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Mapping\PreFlush;
 
 /**
  * @package AppBundle\Entity
@@ -51,7 +50,7 @@ class Invoice
     private $paymentDue;
 
     /**
-     * @OneToMany(targetEntity="InvoiceItem", mappedBy="invoice")
+     * @OneToMany(targetEntity="InvoiceItem", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $items;
 
@@ -80,14 +79,10 @@ class Invoice
         $this->paymentDue = new \DateTime();
     }
 
-    /** @PrePersist */
+    /**
+     * @PreFlush
+     */
     public function calculateTotalOnPrePersist()
-    {
-        $this->calculateTotal();
-    }
-
-    /** @PreUpdate */
-    public function calculateTotalOnPreUpdate()
     {
         $this->calculateTotal();
     }
@@ -189,6 +184,20 @@ class Invoice
     public function setItems($items)
     {
         $this->items = $items;
+    }
+
+    public function addItem(InvoiceItem $item)
+    {
+        $this->items->add($item);
+        $item->setInvoice($this);
+
+        return $this;
+    }
+
+    public function removeItem(InvoiceItem $item)
+    {
+        $this->items->removeElement($item);
+        $item->setInvoice(null);
     }
 
     /**

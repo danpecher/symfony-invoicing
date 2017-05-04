@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,6 +41,13 @@ class InvoiceForm extends AbstractType
             ])
             ->add('paymentDue', DateType::class, [
                 'label' => 'Datum splatnosti',
+            ])
+            ->add('items', CollectionType::class, [
+                'label'        => 'Položky faktury',
+                'entry_type'   => InvoiceItemForm::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ]);
     }
 
