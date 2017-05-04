@@ -31,11 +31,7 @@ class InvoicesController extends Controller
      */
     public function showAction($id)
     {
-        $invoice = $this->getDoctrine()->getRepository(Invoice::class)
-            ->find($id);
-        if (!$invoice) {
-            throw $this->createNotFoundException();
-        }
+        $invoice = $this->findInvoice($id);
 
         return $this->render('invoices/detail.html.twig', [
             'invoice' => $invoice,
@@ -84,11 +80,7 @@ class InvoicesController extends Controller
      */
     public function editAction($id)
     {
-        $invoice = $this->getDoctrine()->getRepository(Invoice::class)
-                        ->find($id);
-        if ( ! $invoice) {
-            throw $this->createNotFoundException();
-        }
+        $invoice = $this->findInvoice($id);
 
         $form = $this->createForm(InvoiceForm::class, $invoice);
 
@@ -103,11 +95,7 @@ class InvoicesController extends Controller
      */
     public function updateAction($id, Request $request)
     {
-        $invoice = $this->getDoctrine()->getRepository(Invoice::class)
-                        ->find($id);
-        if ( ! $invoice) {
-            throw $this->createNotFoundException();
-        }
+        $invoice = $this->findInvoice($id);
         $form = $this->createForm(InvoiceForm::class, $invoice);
         $form->handleRequest($request);
 
@@ -131,16 +119,28 @@ class InvoicesController extends Controller
      */
     public function deleteAction($id)
     {
-        $invoice = $this->getDoctrine()->getRepository(Invoice::class)
-                        ->find($id);
-        if ( ! $invoice) {
-            throw $this->createNotFoundException();
-        }
+        $invoice = $this->findInvoice($id);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($invoice);
         $em->flush();
 
         return $this->redirectToRoute('dashboard');
+    }
+
+    /**
+     * @param $id
+     *
+     * @return Invoice|object
+     */
+    private function findInvoice($id)
+    {
+        $invoice = $this->getDoctrine()->getRepository(Invoice::class)
+                        ->find($id);
+        if ( ! $invoice) {
+            throw $this->createNotFoundException();
+        }
+
+        return $invoice;
     }
 }
