@@ -1,0 +1,24 @@
+.invoice-item-row {
+  display: flex;
+  align-items: center;
+  margin: 10px; }
+
+.invoice-add-item {
+  margin: 20px 0;
+  text-align: center; }
+
+.invoice-items input[type="text"], .invoice-items input[type="number"] {
+  margin-right: 10px; }
+.invoice-items .select {
+  margin-right: 10px; }
+.invoice-items .unit-input {
+  width: 80px; }
+.invoice-items .price-input {
+  width: 100px; }
+
+.invoice-summary {
+  font-size: 22px;
+  text-align: right;
+  margin-right: 20px; }
+
+/*# sourceMappingURL=main.css.map */
