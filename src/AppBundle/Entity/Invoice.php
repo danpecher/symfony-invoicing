@@ -41,7 +41,6 @@ class Invoice
 
     /**
      * @ManyToOne(targetEntity="Client")
-     * @JoinColumn(onDelete="CASCADE")
      */
     private $client;
 

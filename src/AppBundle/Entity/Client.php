@@ -3,8 +3,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * @package AppBundle\Entity
@@ -65,6 +67,19 @@ class Client
      * @OneToOne(targetEntity="User")
      */
     private $user;
+
+    /**
+     * @OneToMany(targetEntity="Invoice", mappedBy="client", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $invoices;
+
+    /**
+     * Client constructor.
+     */
+    public function __construct()
+    {
+        $this->invoices = new ArrayCollection();
+    }
 
     /**
      * @return mixed
