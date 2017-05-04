@@ -15,6 +15,12 @@
     {{ form_widget(form, {'attr': {'class': 'input'}}) }}
 {% endblock email_widget %}
 
+{% block choice_widget %}
+    <span class="select">
+    {{- block('choice_widget_collapsed') -}}
+    </span>
+{% endblock %}
+
 {% block _invoice_form_items_widget %}
     <div class="invoice-items">
         {% set items = [] %}
