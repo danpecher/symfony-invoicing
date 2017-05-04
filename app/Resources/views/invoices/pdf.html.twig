@@ -1,0 +1,155 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PDF faktura</title>
+    <style>
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+
+        .details {
+            width: 50%;
+            float: left;
+        }
+
+        .details p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .invoice-total {
+            margin-top: 30px;
+            font-size: 20px;
+            text-align: right;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table td,
+        table th {
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table th {
+            color: #363636;
+        }
+
+        .table {
+            background-color: white;
+            color: #363636;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .table td,
+        .table th {
+            border: 1px solid #dbdbdb;
+            border-width: 0 0 1px;
+            padding: 0.5em 0.75em;
+            vertical-align: top;
+        }
+
+        .table th {
+            color: #363636;
+            text-align: left;
+        }
+
+        .table tr:hover {
+            background-color: #fafafa;
+        }
+
+        .table tr.is-selected a,
+        .table tr.is-selected strong {
+            color: currentColor;
+        }
+
+        .table tr.is-selected td,
+        .table tr.is-selected th {
+            border-color: #fff;
+            color: currentColor;
+        }
+
+        .table thead td,
+        .table thead th {
+            border-width: 0 0 2px;
+            color: #7a7a7a;
+        }
+
+        .table tfoot td,
+        .table tfoot th {
+            border-width: 2px 0 0;
+            color: #7a7a7a;
+        }
+
+        .table tbody tr:last-child td,
+        .table tbody tr:last-child th {
+            border-bottom-width: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Faktura #{{ invoice.number }}</h1>
+
+<div class="invoice-details">
+    <div class="details">
+        <h2>Dodavatel</h2>
+
+    </div>
+    <div class="details">
+        <h2>Odběratel</h2>
+        <p>{{ invoice.client.name }}</p>
+        <p>{{ invoice.client.street }}</p>
+        <p>{{ invoice.client.postcode }} {{ invoice.client.city }}</p>
+        <p>{{ invoice.client.country }}</p>
+        <p>IČ {{ invoice.client.ic }}</p>
+        <p>DIČ {{ invoice.client.dic }}</p>
+    </div>
+</div>
+
+<div class="payment-data">
+    <dl>
+        <dt>Bankovní účet</dt>
+        <dd></dd>
+        <dt>Variabilní symbol</dt>
+        <dd></dd>
+        <dt>Datum vystavení</dt>
+        <dd>{{ invoice.issuedAt |date('d. m. Y') }}</dd>
+        <dt>Datum splatnosti</dt>
+        <dd>{{ invoice.paymentDue |date('d. m. Y') }}</dd>
+    </dl>
+</div>
+
+<table class="table">
+    <tr>
+        <th width="1">Počet</th>
+        <th width="1">Jednotka</th>
+        <th>Název</th>
+        <th width="150">Cena za MJ</th>
+    </tr>
+    {% for item in invoice.items %}
+        <tr>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.pricePerUnitCents |price(invoice.currency) }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div class="invoice-total">
+    Celkem <strong>{{ invoice.totalCents |price(invoice.currency) }}</strong>
+</div>
+
+</body>
+</html>

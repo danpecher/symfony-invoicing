@@ -237,7 +237,7 @@ class Invoice
      */
     public function getTotalCents()
     {
-        return $this->totalCents;
+        return $this->totalCents / 100;
     }
 
     /**
@@ -245,7 +245,7 @@ class Invoice
      */
     public function setTotalCents($totalCents)
     {
-        $this->totalCents = $totalCents;
+        $this->totalCents = $totalCents * 100;
     }
 
 }

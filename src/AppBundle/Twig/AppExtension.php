@@ -11,7 +11,7 @@ class AppExtension extends \Twig_Extension
         ];
     }
 
-    public function priceFilter($cents, $currency)
+    public function priceFilter($price, $currency)
     {
         $currencies  = [
             'CZK' => [
@@ -27,7 +27,6 @@ class AppExtension extends \Twig_Extension
                 'before' => true
             ],
         ];
-        $price       = floatval($cents) / 100.0;
         $currencyDef = isset($currencies[$currency]) ? $currencies[$currency] : null;
         if (!$currencyDef) {
             return $price . ' ???';

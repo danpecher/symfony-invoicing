@@ -96,13 +96,13 @@ class InvoicesController extends Controller
     public function updateAction($id, Request $request)
     {
         $invoice = $this->findInvoice($id);
-        $form = $this->createForm(InvoiceForm::class, $invoice);
+        $form    = $this->createForm(InvoiceForm::class, $invoice);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $invoice = $form->getData();
 
-            $em      = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($invoice);
             $em->flush();
 
@@ -126,6 +126,20 @@ class InvoicesController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('dashboard');
+    }
+
+    /**
+     * @Route("/invoice/{id}/pdf", name="invoice.pdf", requirements={"id": "\d+"})
+     */
+    public function pdfAction($id)
+    {
+        $invoice = $this->findInvoice($id);
+
+        $html = $this->render('invoices/pdf.html.twig', [
+            'invoice' => $invoice,
+        ])->getContent();
+
+        return $this->get('tfox.mpdfport')->generatePdfResponse($html);
     }
 
     /**

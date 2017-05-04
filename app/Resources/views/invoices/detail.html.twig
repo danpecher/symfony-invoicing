@@ -7,6 +7,10 @@
             <span class="icon is-small"><i class="fa fa-pencil"></i></span>
             <span>Upravit</span>
         </a>
+        <a href="{{ path('invoice.pdf', {id: invoice.id}) }}" target="_blank" class="button is-secondary is-pulled-right">
+            <span class="icon is-small"><i class="fa fa-file"></i></span>
+            <span>PDF</span>
+        </a>
     </h1>
     <dl>
         <dt><strong>Klient</strong></dt>
