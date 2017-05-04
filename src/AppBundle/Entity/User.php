@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Class User
@@ -58,6 +59,11 @@ class User extends \FOS\UserBundle\Model\User
      * @ORM\Column(type="string", nullable=true)
      */
     private $bankAccount;
+
+    /**
+     * @OneToMany(targetEntity="Client", mappedBy="user")
+     */
+    private $clients;
 
     /**
      * @return mixed
@@ -185,6 +191,22 @@ class User extends \FOS\UserBundle\Model\User
     public function setIc($ic)
     {
         $this->ic = $ic;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClients()
+    {
+        return $this->clients;
+    }
+
+    /**
+     * @param mixed $clients
+     */
+    public function setClients($clients)
+    {
+        $this->clients = $clients;
     }
 
 

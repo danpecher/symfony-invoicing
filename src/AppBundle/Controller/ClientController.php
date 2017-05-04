@@ -18,7 +18,8 @@ class ClientController extends Controller
     public function indexAction()
     {
         $clients = $this->getDoctrine()->getRepository(Client::class)
-            ->findAll();
+                        ->findAllForUser($this->getUser()->getId());
+
         return $this->render('client/index.html.twig', [
             'clients' => $clients
         ]);
@@ -29,11 +30,7 @@ class ClientController extends Controller
      */
     public function detailAction($id)
     {
-        $client = $this->getDoctrine()->getRepository(Client::class)
-            ->find($id);
-        if (!$client) {
-            throw $this->createNotFoundException();
-        }
+        $client = $this->findClient($id);
 
         return $this->render('client/detail.html.twig', [
             'client' => $client,
@@ -61,7 +58,8 @@ class ClientController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $client = $form->getData();
-            $em     = $this->getDoctrine()->getManager();
+            $client->setUser($this->getUser());
+            $em = $this->getDoctrine()->getManager();
             $em->persist($client);
             $em->flush();
 
@@ -80,12 +78,10 @@ class ClientController extends Controller
      */
     public function editAction($id, Request $request)
     {
-        $client = $this->getDoctrine()->getRepository(Client::class)
-            ->find($id);
-        if (!$client) {
-            throw $this->createNotFoundException();
-        }
+        $client = $this->findClient($id);
+
         $form = $this->createForm(ClientForm::class, $client);
+
         return $this->render('client/edit.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -97,11 +93,8 @@ class ClientController extends Controller
      */
     public function updateAction($id, Request $request)
     {
-        $client = $this->getDoctrine()->getRepository(Client::class)
-            ->find($id);
-        if (!$client) {
-            throw $this->createNotFoundException();
-        }
+        $client = $this->findClient($id);
+
         $form = $this->createForm(ClientForm::class, $client);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -126,11 +119,8 @@ class ClientController extends Controller
      */
     public function deleteAction($id)
     {
-        $client = $this->getDoctrine()->getRepository(Client::class)
-                       ->find($id);
-        if (!$client) {
-            throw $this->createNotFoundException();
-        }
+        $client = $this->findClient($id);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($client);
         $em->flush();
@@ -138,4 +128,14 @@ class ClientController extends Controller
         return $this->redirectToRoute('clients');
     }
 
+    private function findClient($id)
+    {
+        $client = $this->getDoctrine()->getRepository(Client::class)
+                       ->find($id);
+        if ( ! $client || $client->getUser()->getId() !== $this->getUser()->getId()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $client;
+    }
 }

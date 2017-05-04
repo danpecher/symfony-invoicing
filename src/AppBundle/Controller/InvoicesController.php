@@ -16,7 +16,7 @@ class InvoicesController extends Controller
      */
     public function indexAction()
     {
-        $invoices = $this->getDoctrine()->getRepository(Invoice::class)->findAll();
+        $invoices = $this->getDoctrine()->getRepository(Invoice::class)->findAllForUser($this->getUser()->getId());
 
         return $this->render('default/index.html.twig', [
             'invoices' => $invoices,
@@ -62,6 +62,7 @@ class InvoicesController extends Controller
 
         if ($form->isValid()) {
             $invoice = $form->getData();
+            $invoice->setUser($this->getUser());
             $em      = $this->getDoctrine()->getManager();
             $em->persist($invoice);
             $em->flush();
@@ -151,7 +152,7 @@ class InvoicesController extends Controller
     {
         $invoice = $this->getDoctrine()->getRepository(Invoice::class)
                         ->find($id);
-        if ( ! $invoice) {
+        if ( ! $invoice || $invoice->getUser()->getId() !== $this->getUser()->getId()) {
             throw $this->createNotFoundException();
         }
 

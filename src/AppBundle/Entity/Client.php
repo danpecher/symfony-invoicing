@@ -4,11 +4,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToOne;
 
 /**
  * @package AppBundle\Entity
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ClientRepository")
  * @ORM\Table(name="clients")
  */
 class Client
@@ -59,6 +60,11 @@ class Client
      * @ORM\Column(type="string")
      */
     private $email;
+
+    /**
+     * @OneToOne(targetEntity="User")
+     */
+    private $user;
 
     /**
      * @return mixed
@@ -194,6 +200,22 @@ class Client
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 
 

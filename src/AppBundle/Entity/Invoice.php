@@ -11,11 +11,12 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PreFlush;
+use Doctrine\ORM\Mapping\PostLoad;
 
 /**
  * @package AppBundle\Entity
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\InvoiceRepository")
  * @ORM\Table(name="invoices")
  * @HasLifecycleCallbacks
  */
@@ -111,6 +112,14 @@ class Invoice
         }
 
         $this->setTotalCents($total * 100);
+    }
+
+    /**
+     * @PostLoad
+     */
+    public function checkOwnership()
+    {
+
     }
 
     /**

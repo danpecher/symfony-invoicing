@@ -9,3 +9,14 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    client_repository:
+      class: AppBundle\Repository\ClientRepository
+      factory: ['@doctrine.orm.entity_manager', getRepository]
+      arguments:
+        - AppBundle\Entity\Client
+
+    invoice_form:
+      class: AppBundle\Form\InvoiceForm
+      arguments: ['@client_repository', '@security.token_storage']
+      tags:
+        - { name: form.type }
