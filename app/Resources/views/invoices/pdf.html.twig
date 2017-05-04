@@ -104,7 +104,12 @@
 <div class="invoice-details">
     <div class="details">
         <h2>Dodavatel</h2>
-
+        <p>{{ app.user.name }}</p>
+        <p>{{ app.user.street }}</p>
+        <p>{{ app.user.postcode }} {{ app.user.city }}</p>
+        <p>{{ app.user.country }}</p>
+        <p>IČ {{ app.user.ic }}</p>
+        <p>DIČ {{ app.user.dic }}</p>
     </div>
     <div class="details">
         <h2>Odběratel</h2>
@@ -120,9 +125,9 @@
 <div class="payment-data">
     <dl>
         <dt>Bankovní účet</dt>
-        <dd></dd>
+        <dd>{{ app.user.bankAccount }}</dd>
         <dt>Variabilní symbol</dt>
-        <dd></dd>
+        <dd>{{ invoice.number }}</dd>
         <dt>Datum vystavení</dt>
         <dd>{{ invoice.issuedAt |date('d. m. Y') }}</dd>
         <dt>Datum splatnosti</dt>
