@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="title">
+        Faktura #{{ invoice.number }}
+        <a href="{{ path('invoice.edit', {id: invoice.id}) }}" class="button is-primary is-pulled-right">
+            <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+            <span>Upravit</span>
+        </a>
+    </h1>
+    <dl>
+        <dt><strong>Klient</strong></dt>
+        <dd><a href="{{ path('client.detail', {id: invoice.client.id}) }}">{{ invoice.client.name }}</a></dd>
+        <dt><strong>Datum vystavení</strong></dt>
+        <dd>{{ invoice.issuedAt |date('d. m. Y')}}</dd>
+        <dt><strong>Datum splatnosti</strong></dt>
+        <dd>{{ invoice.paymentDue |date('d. m. Y')}}</dd>
+        <dt><strong>Celkem</strong></dt>
+        <dd>{{ invoice.totalCents |price(invoice.currency) }}</dd>
+    </dl>
+{% endblock %}

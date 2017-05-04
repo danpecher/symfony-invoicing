@@ -9,12 +9,16 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 
 /**
  * @package AppBundle\Entity
  *
  * @ORM\Entity
  * @ORM\Table(name="invoices")
+ * @HasLifecycleCallbacks
  */
 class Invoice
 {
@@ -26,7 +30,7 @@ class Invoice
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $issuedAt;
 
@@ -37,11 +41,12 @@ class Invoice
 
     /**
      * @ManyToOne(targetEntity="Client")
+     * @JoinColumn(onDelete="CASCADE")
      */
     private $client;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $paymentDue;
 
@@ -63,7 +68,7 @@ class Invoice
     /**
      * @ORM\Column(type="integer")
      */
-    private $total;
+    private $totalCents;
 
     /**
      * Invoice constructor.
@@ -71,6 +76,29 @@ class Invoice
     public function __construct()
     {
         $this->items = new ArrayCollection();
+    }
+
+    /** @PrePersist */
+    public function calculateTotalOnPrePersist()
+    {
+        $this->calculateTotal();
+    }
+
+    /** @PreUpdate */
+    public function calculateTotalOnPreUpdate()
+    {
+        $this->calculateTotal();
+    }
+
+    private function calculateTotal()
+    {
+        $total = 0;
+        /** @var InvoiceItem $item */
+        foreach ($this->items as $item) {
+            $total += $item->getQuantity() * $item->getPricePerUnitCents();
+        }
+
+        $this->setTotalCents($total);
     }
 
     /**
@@ -196,17 +224,17 @@ class Invoice
     /**
      * @return mixed
      */
-    public function getTotal()
+    public function getTotalCents()
     {
-        return $this->total;
+        return $this->totalCents;
     }
 
     /**
-     * @param mixed $total
+     * @param mixed $totalCents
      */
-    public function setTotal($total)
+    public function setTotalCents($totalCents)
     {
-        $this->total = $total;
+        $this->totalCents = $totalCents;
     }
 
 }

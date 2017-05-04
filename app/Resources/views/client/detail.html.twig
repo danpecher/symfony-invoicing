@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="title">
+        Detail klienta
+
+        <a href="{{ path('client.delete', {id: client.id}) }}" class="button is-danger is-pulled-right">
+            <span class="icon is-small">
+            <i class="fa fa-trash"></i>
+                </span>
+            <span>Smazat</span>
+        </a>
+        <a href="{{ path('client.edit', {id: client.id}) }}" class="button is-primary is-pulled-right">
+            <span class="icon is-small">
+            <i class="fa fa-pencil"></i>
+                </span>
+            <span>Upravit</span>
+        </a>
+    </h1>
+    <dl>
+        <dt><strong>Jméno</strong></dt>
+        <dd>{{ client.name }}</dd>
+        <dt><strong>Ulice</strong></dt>
+        <dd>{{ client.street }}</dd>
+        <dt><strong>Město</strong></dt>
+        <dd>{{ client.city }}</dd>
+        <dt><strong>PSČ</strong></dt>
+        <dd>{{ client.postcode }}</dd>
+        <dt><strong>Stát</strong></dt>
+        <dd>{{ client.country }}</dd>
+        <dt><strong>IČ</strong></dt>
+        <dd>{{ client.ic }}</dd>
+        <dt><strong>DIČ</strong></dt>
+        <dd>{{ client.dic }}</dd>
+        <dt><strong>E-mail</strong></dt>
+        <dd>{{ client.email }}</dd>
+    </dl>
+{% endblock %}

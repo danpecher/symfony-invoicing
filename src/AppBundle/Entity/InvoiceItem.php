@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * @package AppBundle\Entity
@@ -39,6 +40,11 @@ class InvoiceItem
      * @ORM\Column(type="integer")
      */
     private $pricePerUnitCents;
+
+    /**
+     * @ManyToOne(targetEntity="Invoice")
+     */
+    private $invoice;
 
     /**
      * @return mixed
@@ -118,5 +124,21 @@ class InvoiceItem
     public function setPricePerUnitCents($pricePerUnitCents)
     {
         $this->pricePerUnitCents = $pricePerUnitCents;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInvoice()
+    {
+        return $this->invoice;
+    }
+
+    /**
+     * @param mixed $invoice
+     */
+    public function setInvoice($invoice)
+    {
+        $this->invoice = $invoice;
     }
 }

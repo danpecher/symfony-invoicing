@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="title">
+        Seznam klientů
+        <a href="{{ path('client.new') }}" class="button is-success is-pulled-right">
+            <span class="icon is-small">
+                <i class="fa fa-plus"></i>
+            </span>
+            <span>Přidat klienta</span>
+        </a>
+    </h1>
+
+    {% for client in clients %}
+        <div class="client-row">
+            <a href="{{ path('client.detail', {id: client.id}) }}">{{ client.name }}</a>
+        </div>
+    {% endfor %}
+{% endblock %}
