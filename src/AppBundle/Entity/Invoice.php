@@ -59,6 +59,7 @@ class Invoice
     private $currency;
 
     /**
+     * @ManyToOne(targetEntity="User")
      */
     private $user;
 
@@ -108,7 +109,7 @@ class Invoice
             $total += $item->getQuantity() * $item->getPricePerUnitCents();
         }
 
-        $this->setTotalCents($total * 100);
+        $this->setTotalCents($total);
     }
 
     /**
